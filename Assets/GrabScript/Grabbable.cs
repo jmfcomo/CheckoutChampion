@@ -77,6 +77,9 @@ public class Grabbable : MonoBehaviour
 
                     Vector3 newPos = Camera.main.ScreenToWorldPoint(mousePos);
 
+                    // Just make extra sure the y position doesn't move
+                    newPos.y = transform.position.y;
+
 
                     // TODO: Transparent image
 
@@ -90,6 +93,24 @@ public class Grabbable : MonoBehaviour
 
 
                     rb.MovePosition(newPos);
+                }
+
+                if (CameraGrab.mode == CameraGrab.CameraMode.TransitionConveyorToBox)
+                {
+                    Vector3 mousePos = Input.mousePosition;
+                    mousePos.z = Camera.main.transform.position.y - transform.position.y;
+
+                    Vector3 newPos = CameraGrab.s.boxCam.ScreenToWorldPoint(mousePos);
+
+                    // Just make extra sure the y position doesn't move
+                    newPos.y = transform.position.y;
+
+
+                    // TODO: Transparent image
+                    Vector3 flatZ = transform.position;
+                    flatZ.z = 0;
+
+                    rb.MovePosition(Vector3.Lerp(flatZ, newPos, CameraGrab.s.transitionProgress));
                 }
                 
             }

@@ -24,14 +24,26 @@ public class CameraGrab : MonoBehaviour
     public Vector3 boxPos;
     public Vector3 boxRot;
 
+
     public AnimationCurve transitionEase;
     public float transitionDuration = 1f;
 
     private float transitionStartTime;
+    public Camera boxCam;
+
+    public float transitionProgress
+    {
+        get
+        {
+            return transitionEase.Evaluate((Time.time - transitionStartTime) / transitionDuration);
+        }
+    }
 
     void Start()
     {
         s = this;
+        boxCam.transform.position = boxPos;
+        boxCam.transform.rotation = Quaternion.Euler(boxRot);
     }
 
     // Update is called once per frame
@@ -56,6 +68,11 @@ public class CameraGrab : MonoBehaviour
             }
         }
 
+        if (mode == CameraMode.Box && !isGrabbing)
+        {
+            transitionCam();
+        }
+
         // Just for testing, toggle views
 
         
@@ -64,8 +81,8 @@ public class CameraGrab : MonoBehaviour
 
         if (mode == CameraMode.TransitionConveyorToBox)
         {
-            transform.position = Vector3.Lerp(conveyorPos, boxPos, transitionEase.Evaluate((Time.time - transitionStartTime) / transitionDuration));
-            transform.rotation = Quaternion.Euler(Vector3.Lerp(conveyorRot, boxRot, transitionEase.Evaluate((Time.time - transitionStartTime) / transitionDuration)));
+            transform.position = Vector3.Lerp(conveyorPos, boxPos, transitionProgress);
+            transform.rotation = Quaternion.Euler(Vector3.Lerp(conveyorRot, boxRot, transitionProgress));
             if (Time.time - transitionStartTime > transitionDuration)
             {
                 mode = CameraMode.Box;
@@ -74,8 +91,8 @@ public class CameraGrab : MonoBehaviour
 
         if (mode == CameraMode.TransitionBoxToConveyor)
         {
-            transform.position = Vector3.Lerp(boxPos, conveyorPos, transitionEase.Evaluate((Time.time - transitionStartTime) / transitionDuration));
-            transform.rotation = Quaternion.Euler(Vector3.Lerp(boxRot, conveyorRot, transitionEase.Evaluate((Time.time - transitionStartTime) / transitionDuration)));
+            transform.position = Vector3.Lerp(boxPos, conveyorPos, transitionProgress);
+            transform.rotation = Quaternion.Euler(Vector3.Lerp(boxRot, conveyorRot, transitionProgress));
             if (Time.time - transitionStartTime > transitionDuration)
             {
                 mode = CameraMode.Conveyor;
