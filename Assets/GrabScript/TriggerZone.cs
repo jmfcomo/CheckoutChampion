@@ -13,11 +13,14 @@ public class TriggerZone : MonoBehaviour
         }
     }
 
+    
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.GetComponent<Grabbable>() != null)
+        Grabbable grabbable = other.gameObject.GetComponent<Grabbable>();
+        if (grabbable != null && grabbable.isGrabbed)
         {
             CameraGrab.s.transitionCam();
         }
     }
+    
 }
