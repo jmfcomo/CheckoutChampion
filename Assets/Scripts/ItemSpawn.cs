@@ -8,7 +8,7 @@ public class ItemSpawn : MonoBehaviour
     public GameObject spawnPoint;
     public List<GameObject> itemPrefabs;
 
-    public float speed = 1.0f;
+    public float speed = 0.5f;
     public float spawnWait = 5.0f; // time in seconds to wait before spawning new item
     private int spawnFrames;
 

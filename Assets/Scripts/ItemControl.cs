@@ -10,9 +10,12 @@ public class ItemControl : MonoBehaviour
     // Start is called before the first frame update
     private void FixedUpdate()
     {
-        Vector3 pos = transform.position;
-        pos.x += speed;
-        transform.position = pos;
+        if (transform.position.x < 4.2)
+        {
+            Vector3 pos = transform.position;
+            pos.x += speed;
+            transform.position = pos;
+        }
     }
 
     public void SetSpeed(float speed)
