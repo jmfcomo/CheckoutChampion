@@ -6,7 +6,7 @@ public class TriggerZone : MonoBehaviour
 {
     void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("");
+        Debug.Log("wah");
         if(collider.gameObject.GetComponent<Grabbable>() != null)
         {
             CameraGrab.s.transitionCam();
