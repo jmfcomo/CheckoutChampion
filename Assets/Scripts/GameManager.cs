@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this);
-        GameObjectEvents
+        //GameObjectEvents
     }
 
     [Serializable]
