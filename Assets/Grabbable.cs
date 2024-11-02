@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+
     public bool isGrabbed = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+              
     }
 
     // Update is called once per frame
@@ -22,8 +23,13 @@ public class NewBehaviourScript : MonoBehaviour
         if(isGrabbed)
         {
             Vector3 mousePos = Input.mousePosition;
-            Vector3 newPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, -Camera.main.transform.position.z));
-            transform.position = newPos;
+
+            // Send out ray from camera to mouse
+            Ray r = Camera.main.ScreenPointToRay(mousePos);
+            // Find where that ray intersects with the z=0 plane
+            Vector3 rPos = r.GetPoint(-r.origin.z / r.direction.z);
+            // That's where we want our object to be
+            transform.position = rPos;
         }
     }
 }
