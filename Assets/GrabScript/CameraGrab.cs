@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using static CameraGrab;
 
 public class CameraGrab : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class CameraGrab : MonoBehaviour
 
     public static CameraMode mode = CameraMode.Conveyor;
     public static bool isGrabbing = false;
+    public static CameraGrab s;
 
     public Vector3 conveyorPos;
     public Vector3 conveyorRot;
@@ -27,18 +29,23 @@ public class CameraGrab : MonoBehaviour
 
     private float transitionStartTime;
 
+    void Start()
+    {
+        s = this;
+    }
 
     // Update is called once per frame
     void Update()
     {
         // Pick up items
-        if (mode == CameraMode.Conveyor && !isGrabbing && Input.GetMouseButtonDown(0))
+        if (mode == CameraMode.Conveyor && !isGrabbing && Input.GetMouseButton(0))
         {
             // Raycast toward mouse
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit[] hit = Physics.RaycastAll(ray);
 
-
+            Debug.Log(hit.First<RaycastHit>().rigidbody.gameObject);
+            Debug.DrawRay(ray.origin, ray.direction * 100);
             // If first thing hit is grabbable
             Grabbable grabbable = hit.First<RaycastHit>().rigidbody.gameObject.GetComponent<Grabbable>();
             if (grabbable != null)
@@ -51,21 +58,7 @@ public class CameraGrab : MonoBehaviour
 
         // Just for testing, toggle views
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            if (mode == CameraMode.Conveyor)
-            {
-                transitionStartTime = Time.time;
-                mode = CameraMode.TransitionConveyorToBox;
-            }
-            if (mode == CameraMode.Box)
-            {
-                transitionStartTime = Time.time;
-                mode = CameraMode.TransitionBoxToConveyor;
-            }
-
-
-        }
+        
 
         // Transitions
 
@@ -88,5 +81,18 @@ public class CameraGrab : MonoBehaviour
                 mode = CameraMode.Conveyor;
             }
         }
+    }
+    public void transitionCam()
+    {
+         if (mode == CameraMode.Conveyor)
+         {
+             transitionStartTime = Time.time;
+             mode = CameraMode.TransitionConveyorToBox;
+         }
+         if (mode == CameraMode.Box)
+         {
+             transitionStartTime = Time.time;
+             mode = CameraMode.TransitionBoxToConveyor;
+         }
     }
 }
