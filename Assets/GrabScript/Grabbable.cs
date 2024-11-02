@@ -10,7 +10,7 @@ public class Grabbable : MonoBehaviour
     public bool isGrabbed = false;
     // Value when it is at rest on the conveyor belt. Prevents it from being pushed through
     public float startY;
-
+    public float maxY;
 
     Rigidbody rb;
 
@@ -49,8 +49,26 @@ public class Grabbable : MonoBehaviour
                     Vector3 rPos = r.GetPoint(-r.origin.z / r.direction.z);
 
                     // That's where we want our object to be
-                    rPos.y = Mathf.Clamp(rPos.y, startY, Mathf.Infinity);
+                    rPos.y = Mathf.Clamp(rPos.y, startY, maxY);
                     rb.MovePosition(rPos);
+                }
+
+                if (CameraGrab.mode == CameraGrab.CameraMode.Box)
+                {
+                    Vector3 mousePos = Input.mousePosition;
+                    mousePos.z = Camera.main.transform.position.y - transform.position.y;
+
+                    Vector3 newPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+                    Color c = gameObject.GetComponent<Renderer>().material.color;
+                    c.a = 0.5f;
+                    //gameObject.GetComponent<Renderer>().material.SetColor(, c);
+                    gameObject.GetComponent<Renderer>().material.ToFadeMode();
+
+
+
+
+                    rb.MovePosition(newPos);
                 }
                 
             }
