@@ -60,12 +60,16 @@ public class Grabbable : MonoBehaviour
 
                     Vector3 newPos = Camera.main.ScreenToWorldPoint(mousePos);
 
+
+                    // TODO: Transparent image
+
+                    /*
                     Color c = gameObject.GetComponent<Renderer>().material.color;
                     c.a = 0.5f;
                     //gameObject.GetComponent<Renderer>().material.SetColor(, c);
                     gameObject.GetComponent<Renderer>().material.ToFadeMode();
 
-
+                    */
 
 
                     rb.MovePosition(newPos);

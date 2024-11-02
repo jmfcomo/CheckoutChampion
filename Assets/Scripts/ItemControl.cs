@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Grabbable))]
 public class ItemControl : MonoBehaviour
 {
     private float speed;
+    private Grabbable grabbable;
 
+    private void Start()
+    {
+        grabbable = GetComponent<Grabbable>();
+    }
 
     // Start is called before the first frame update
     private void FixedUpdate()
     {
-        if (transform.position.x < 4.2)
+        if (!grabbable.isGrabbed && transform.position.x < 4.2)
         {
             Vector3 pos = transform.position;
             pos.x += speed;
