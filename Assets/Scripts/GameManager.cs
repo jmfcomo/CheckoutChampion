@@ -7,7 +7,7 @@ using static UnityEditor.Progress;
 
 public class GameManager : MonoBehaviour
 {
-    public Customer John;
+    public List<Customer> customers;
 
 
     [Serializable]
@@ -24,18 +24,4 @@ public class GameManager : MonoBehaviour
         public GameObject prefab;
         public int quantity;
     }
-
-    //public List<Customer> customers = new List<Customer>
-    //{
-    //    new Customer 
-    //    {
-    //        name = "Alice",
-    //        dialogue = "I'd like to buy some apples and oranges.",
-    //        items = new List<CheckoutItem>
-    //        {
-    //            new CheckoutItem { prefab = applePrefab, quantity = 3 },
-    //            new CheckoutItem { prefab = orangePrefab, quantity = 2 }
-    //        }
-    //    },
-    //};
 }
