@@ -38,17 +38,21 @@ public class Grabbable : MonoBehaviour
             }
             else
             {
-                Vector3 mousePos = Input.mousePosition;
+                if (CameraGrab.mode == CameraGrab.CameraMode.Conveyor)
+                {
+                    Vector3 mousePos = Input.mousePosition;
 
-                // Send out ray from camera to mouse
-                Ray r = Camera.main.ScreenPointToRay(mousePos);
-             
-                // Find where that ray intersects with the z=0 plane
-                Vector3 rPos = r.GetPoint(-r.origin.z / r.direction.z);
+                    // Send out ray from camera to mouse
+                    Ray r = Camera.main.ScreenPointToRay(mousePos);
+
+                    // Find where that ray intersects with the z=0 plane
+                    Vector3 rPos = r.GetPoint(-r.origin.z / r.direction.z);
+
+                    // That's where we want our object to be
+                    rPos.y = Mathf.Clamp(rPos.y, startY, Mathf.Infinity);
+                    rb.MovePosition(rPos);
+                }
                 
-                // That's where we want our object to be
-                rPos.y = Mathf.Clamp(rPos.y, startY, Mathf.Infinity);
-                rb.MovePosition(rPos);
             }
         }
     }
