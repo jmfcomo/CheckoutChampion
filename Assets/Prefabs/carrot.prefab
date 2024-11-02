@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: bdc82372a0de70d46a60aca3cff40e9a, type: 3}
       propertyPath: m_Name
-      value: carrot
+      value: Carrot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -71,9 +71,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdc82372a0de70d46a60aca3cff40e9a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7891446636848683408}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdc82372a0de70d46a60aca3cff40e9a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2192228132908375852}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bdc82372a0de70d46a60aca3cff40e9a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1780672505788744923}
@@ -113,29 +110,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &2192228132908375852
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6484134709319483068}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 5
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1780672505788744923
 MonoBehaviour:
   m_ObjectHideFlags: 0
