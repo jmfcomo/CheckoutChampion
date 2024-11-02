@@ -9,8 +9,15 @@ public class Grabbable : MonoBehaviour
 
     public bool isGrabbed = false;
     // Value when it is at rest on the conveyor belt. Prevents it from being pushed through
+    // NO LONGER IN USE
+    /*
     public float startY;
     public float maxY;
+    */
+
+    // Clamp mouse positions to keep grabbed item from clipping through conveyor belt or camera in box view
+    const float MOUSE_Y_MIN = 500f;
+    const float MOUSE_Y_MAX = 725f;
 
     Rigidbody rb;
 
@@ -24,7 +31,9 @@ public class Grabbable : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(isGrabbed)
+        Debug.Log(Input.mousePosition);
+
+        if (isGrabbed)
         {
             // Do we drop?
             if (!Input.GetMouseButton(0))
@@ -42,6 +51,9 @@ public class Grabbable : MonoBehaviour
                 {
                     Vector3 mousePos = Input.mousePosition;
 
+                    // Make sure it does not clip through 
+                    mousePos.y = Mathf.Clamp(mousePos.y, MOUSE_Y_MIN, MOUSE_Y_MAX);
+
                     // Send out ray from camera to mouse
                     Ray r = Camera.main.ScreenPointToRay(mousePos);
 
@@ -49,7 +61,12 @@ public class Grabbable : MonoBehaviour
                     Vector3 rPos = r.GetPoint(-r.origin.z / r.direction.z);
 
                     // That's where we want our object to be
+
+                    // No longer using an individual min/max y system:
+                    
+                    /*
                     rPos.y = Mathf.Clamp(rPos.y, startY, maxY);
+                    */
                     rb.MovePosition(rPos);
                 }
 
