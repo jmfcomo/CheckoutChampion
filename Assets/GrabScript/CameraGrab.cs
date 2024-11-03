@@ -54,12 +54,20 @@ public class CameraGrab : MonoBehaviour
         {
             // Raycast toward mouse
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
             RaycastHit[] hit = Physics.RaycastAll(ray);
 
-            Debug.Log(hit.First<RaycastHit>().rigidbody.gameObject);
-            Debug.DrawRay(ray.origin, ray.direction * 100);
+            foreach (var h in hit.Where(h => h.rigidbody != null))
+            {
+                Debug.Log(h.collider.gameObject.name);
+            }
+
+            Debug.Log(hit.First<RaycastHit>().collider.gameObject);
+
+            //Debug.Log(hit.Where<RaycastHit>(h => h.rigidbody.gameObject.GetComponent<Grabbable>() != null).First().rigidbody.gameObject);
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red);
             // If first thing hit is grabbable
-            Grabbable grabbable = hit.First<RaycastHit>().rigidbody.gameObject.GetComponent<Grabbable>();
+            Grabbable grabbable = hit.Where(h => h.rigidbody != null && h.rigidbody.gameObject.GetComponent<Grabbable>() != null).First().rigidbody.gameObject.GetComponent<Grabbable>();
             if (grabbable != null)
             {
                 // Grab it

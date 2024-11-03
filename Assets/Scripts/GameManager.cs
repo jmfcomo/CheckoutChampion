@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-            print("random ind after = " + randomIndex);
+            //print("random ind after = " + randomIndex);
 
             var randomItem = checkoutItems[randomIndex].prefab;
             tempQuantities[randomIndex]--;
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
         {
             NewCustomer();
             currentCustomer = customer;
-            print(customer.name);
+            //print(customer.name);
             StartCoroutine(SpawnItems(customer.items));
             yield return new WaitUntil(() => !isSpawningItems);
             Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);

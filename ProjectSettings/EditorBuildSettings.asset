@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: 3c3bdc53f8f9c96408f4f8083f164c73
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/ConveyorTemp.unity
     guid: 6c01141cb092bd14f8d9514ae48139e4
+  - enabled: 1
+    path: Assets/Scenes/LevelTemp.unity
+    guid: c70a45b707813c240a297ba9535e8176
   m_configObjects: {}
