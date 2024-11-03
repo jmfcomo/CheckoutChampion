@@ -53,11 +53,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1f70e4d4dc1ad634cb025dd4ae39a4d2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.12
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1f70e4d4dc1ad634cb025dd4ae39a4d2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.85
+      value: 0.507
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1f70e4d4dc1ad634cb025dd4ae39a4d2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -155,3 +155,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 5965824695963314993}
+  speed: 0.025

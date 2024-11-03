@@ -34,4 +34,10 @@ public class CustomerControl : MonoBehaviour
             animator.SetTrigger("TriEndWalk");
         }
     }
+
+    public void RetriggerAnimation()
+    {
+        frame = 0;
+        animator.SetTrigger("TriStartWalk");
+    }
 }

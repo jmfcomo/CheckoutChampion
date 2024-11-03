@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour
     public GameObject crateInstance;
     private GameObject cartInstance;
     private TMP_Text scoreText;
+
+    private List<CustomerControl> customerModels = new List<CustomerControl>();
 
 
     private void Start()
@@ -167,6 +170,7 @@ public class GameManager : MonoBehaviour
     private void NewCustomer()
     {
         GameObject customer = Instantiate(customerPrefab);
+        customerModels.Add(customer.GetComponent<CustomerControl>());
     }
 
     public void EndCustomer()
@@ -189,6 +193,10 @@ public class GameManager : MonoBehaviour
 
         cartInstance.GetComponent<MoveToCart>().StartAnimation((MoveToCart a) => { Destroy(a.gameObject); });
 
+        // Animate old customer out
+        customerModels.First().RetriggerAnimation();
+        customerModels.RemoveAt(0);
+
         // Spawn new cart and crate
         crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
         cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
@@ -207,7 +215,7 @@ public class GameManager : MonoBehaviour
         crateInstance.GetComponent<MoveToCart>().steps.Add(step);
         crateInstance.GetComponent<MoveToCart>().StartAnimation((MoveToCart a) => { a.steps = tempSteps; });
 
-        // Animate cart
+        // Animate new cart
         cartInstance.GetComponent<MoveToCart>().StartAnimation();
 
     }
