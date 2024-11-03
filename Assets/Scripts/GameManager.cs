@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public List<Customer> customers;
     static private GameManager S;
-    public GameObject applePrefab;
+    public GameObject customerPrefab;
     public float itemSpawnWait;
 
     private void Awake()
@@ -117,11 +117,17 @@ public class GameManager : MonoBehaviour
         //iterate through customers
         foreach(var customer in customers)
         {
+            NewCustomer();
             print(customer.name);
             StartCoroutine(SpawnItems(customer.items));
             yield return new WaitUntil(() => !isSpawningItems);
 
         }
+    }
+
+    private void NewCustomer()
+    {
+        GameObject customer = Instantiate(customerPrefab);
     }
 
     private void EndCustomer()
