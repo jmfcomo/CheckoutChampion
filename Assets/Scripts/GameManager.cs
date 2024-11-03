@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public static GameManager S;
     public GameObject separatorPrefab;
     public GameObject cratePrefab;
+    public GameObject cartPrefab;
     public float itemSpawnWait;
 
     public int score;
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     private Transform crateSpawnPoint;
     private bool isSpawningItems =false;
     private GameObject crateInstance;
+    private GameObject cartInstance;
 
 
     private void Start()
@@ -123,6 +125,8 @@ public class GameManager : MonoBehaviour
         score = 0;
 
         crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
+        cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
+        cartInstance.GetComponent<MoveToCart>().StartAnimation();
 
         //iterate through customers
         foreach(var customer in customers)
@@ -130,6 +134,7 @@ public class GameManager : MonoBehaviour
             NewCustomer();
             currentCustomer = customer;
 
+            // Dynamic soundtrack
             foreach (var tracks in SoundtrackManager.s.tracks)
             {
                 tracks.state = SoundtrackManager.PlayState.PendingMute;
@@ -155,13 +160,42 @@ public class GameManager : MonoBehaviour
 
     public void EndCustomer()
     {
-        crateInstance.GetComponent<MoveToCart>().playing = true;
+        crateInstance.GetComponent<MoveToCart>().StartAnimation();
 
         Invoke("Score", 4f);
     }
 
     public void Score()
     {
-        score += Scoring.s.GetScore();
+        //score += Scoring.s.GetScore();
+
+
+        cartInstance.GetComponent<MoveToCart>().steps[0].pos = cartInstance.transform.position;
+        cartInstance.GetComponent<MoveToCart>().steps[1].pos = cartInstance.transform.position + new Vector3(6, 0, 0);
+
+        crateInstance.transform.parent = cartInstance.transform;
+
+        cartInstance.GetComponent<MoveToCart>().StartAnimation((MoveToCart a) => { Destroy(a.gameObject); });
+
+        crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
+        cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
+
+        // Animate new crate
+        List<MoveToCart.AnimationStep> tempSteps = new List<MoveToCart.AnimationStep>(crateInstance.GetComponent<MoveToCart>().steps);
+        crateInstance.GetComponent<MoveToCart>().steps.Clear();
+
+        //crateInstance.GetComponent<MoveToCart>().steps = new List<MoveToCart.AnimationStep>();
+        MoveToCart.AnimationStep step = new MoveToCart.AnimationStep();
+        step.pos = crateInstance.transform.position + new Vector3(0, 0, 6);
+        crateInstance.GetComponent<MoveToCart>().steps.Add(step);
+        step.pos = crateSpawnPoint.position;
+        step.duration = 3;
+        step.curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        crateInstance.GetComponent<MoveToCart>().steps.Add(step);
+        crateInstance.GetComponent<MoveToCart>().StartAnimation((MoveToCart a) => { a.steps = tempSteps; });
+
+        // Animate cart
+        cartInstance.GetComponent<MoveToCart>().StartAnimation();
+
     }
 }

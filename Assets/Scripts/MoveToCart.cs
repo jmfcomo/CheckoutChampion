@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -9,15 +11,17 @@ public class MoveToCart : MonoBehaviour
     [System.Serializable]
     public class AnimationStep
     {
-        public Vector3 pos;
-        public Vector3 rot;
-        public float duration;
+        public Vector3 pos = Vector3.zero;
+        public Vector3 rot = Vector3.zero;
+        public float duration = 0;
         public AnimationCurve curve = AnimationCurve.Linear(0, 0, 1, 1);
     }
 
-    private int currentStep = 1;
+    public int currentStep = 1;
     public bool playing = false;
     private float animStepStartTime;
+
+    private Action<MoveToCart> endAction = (MoveToCart a) => { };
 
     private Rigidbody rb;
 
@@ -38,12 +42,16 @@ public class MoveToCart : MonoBehaviour
                 if (++currentStep == steps.Count)
                 {
                     playing = false;
+                    //currentStep = 1;
+                    endAction(this);
+                    return;
                 }
                 else
                 {
                     animStepStartTime = Time.time;
                 }
             }
+
             
             Vector3 pos = Vector3.Lerp(steps[currentStep - 1].pos, steps[currentStep].pos, steps[currentStep].curve.Evaluate((Time.time - animStepStartTime) / steps[currentStep].duration));
             Quaternion rot = Quaternion.Euler(Vector3.Lerp(steps[currentStep - 1].pos, steps[currentStep].pos, steps[currentStep].curve.Evaluate((Time.time - animStepStartTime) / steps[currentStep].duration)));
@@ -54,9 +62,19 @@ public class MoveToCart : MonoBehaviour
 
     public void StartAnimation()
     {
-        playing = true;
         currentStep = 1;
         animStepStartTime = Time.time;
+
+        playing = true;
+
+        Debug.Log(gameObject.name + " movin");
+    }
+
+    public void StartAnimation(Action<MoveToCart> func)
+    {
+        endAction = func;
+
+        StartAnimation();
     }
 
 }
