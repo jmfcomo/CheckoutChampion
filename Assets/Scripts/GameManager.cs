@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public int score;
     public int day;
     public int money=0;
+    public int moneyLevel;
 
     public Customer currentCustomer { get; private set; }
 
@@ -158,7 +159,10 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartLevel()
     {
         score = 0;
-        speed *= 1.15f;
+        if (speed < 0.06f)
+        {
+            speed *= 1.05f;
+        }
         day++;
         allCustomersSpawned = false;
         if (S.decorations != null)
@@ -230,7 +234,8 @@ public class GameManager : MonoBehaviour
     {
         score += Scoring.s.GetScore();
         scoreText.text = score.ToString();
-        money += score / 200;
+        moneyLevel = score / 200;
+        money += moneyLevel;
 
         // Animate old cart out
         cartInstance.GetComponent<MoveToCart>().steps[0].pos = cartInstance.transform.position;
@@ -297,12 +302,12 @@ public class GameManager : MonoBehaviour
     private void LevelComplete()
     {
         levelEndScreen.SetActive(true); 
-        levelEndText[0].GetComponent<TMP_Text>().text = "Day " + (day+1) + " Complete!";
+        levelEndText[0].GetComponent<TMP_Text>().text = "Day " + (day) + " Complete!";
         levelEndText[1].GetComponent<TMP_Text>().text = customers[0].name;
         levelEndText[2].GetComponent<TMP_Text>().text = customers[1].name;
         levelEndText[3].GetComponent<TMP_Text>().text = customers[2].name;
         levelEndText[4].GetComponent<TMP_Text>().text = score.ToString();
-        levelEndText[5].GetComponent<TMP_Text>().text = (score/200).ToString();
+        levelEndText[5].GetComponent<TMP_Text>().text = (moneyLevel).ToString();
     }
 }
 
