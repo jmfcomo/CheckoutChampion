@@ -10,8 +10,10 @@ public class GameManager : MonoBehaviour
 {
     public List<Customer> customers;
     static private GameManager S;
-    public GameObject applePrefab;
+    public GameObject separatorPrefab;
+    public GameObject cratePrefab;
     public float itemSpawnWait;
+
 
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
     }
 
     private Transform spawnPoint;
+    private Transform crateSpawnPoint;
     private bool isSpawningItems =false;
 
 
@@ -105,8 +108,7 @@ public class GameManager : MonoBehaviour
     private void OnActiveSceneChange(Scene current, Scene next)
     {
         S.spawnPoint = GameObject.Find("Conveyor/SpawnPoint").transform;
-        
-        print(spawnPoint);
+        S.crateSpawnPoint = GameObject.Find("Conveyor/CrateSpawnPoint").transform;      
 
         StartCoroutine(StartLevel());
     }
@@ -114,6 +116,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartLevel()
     {
+        Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
+
         //iterate through customers
         foreach(var customer in customers)
         {
