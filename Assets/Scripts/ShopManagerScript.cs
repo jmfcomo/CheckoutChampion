@@ -51,6 +51,14 @@ public class ShopManagerScript : MonoBehaviour
         shopItems[1, 5] = 40;
         shopItems[1, 6] = 30;
         shopItems[1, 7] = 500;
+
+        // music
+        foreach (var track in SoundtrackManager.s.tracks)
+        {
+            track.state = SoundtrackManager.PlayState.PendingMute;
+        }
+
+        SoundtrackManager.s.tracks[7].state = SoundtrackManager.PlayState.Pending;
     }
 
     public void Buy ()
