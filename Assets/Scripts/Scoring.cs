@@ -31,6 +31,9 @@ public class Scoring : MonoBehaviour
             {
                 score += g.pointValue;
                 count++;
+
+                g.gameObject.transform.parent = GameManager.S.crateInstance.transform; //make each grabble a child of tranform
+                g.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             }
         }
 

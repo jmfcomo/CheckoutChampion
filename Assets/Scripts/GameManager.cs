@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     private Transform spawnPoint;
     private Transform crateSpawnPoint;
     private bool isSpawningItems =false;
-    private GameObject crateInstance;
+    public GameObject crateInstance;
     private GameObject cartInstance;
     private TMP_Text scoreText;
 
