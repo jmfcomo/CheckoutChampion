@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public GameObject cratePrefab;
     public float itemSpawnWait;
 
+    public int score;
+
     public Customer currentCustomer { get; private set; }
 
     private void Awake()
@@ -117,6 +119,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartLevel()
     {
+        score = 0;
+
         crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
 
         //iterate through customers
@@ -134,5 +138,12 @@ public class GameManager : MonoBehaviour
     public void EndCustomer()
     {
         crateInstance.GetComponent<MoveToCart>().playing = true;
+
+        Invoke("Score", 4f);
+    }
+
+    public void Score()
+    {
+        score += Scoring.s.GetScore();
     }
 }

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Scoring : MonoBehaviour
 {
+    public static Scoring s;
     // Start is called before the first frame update
     void Start()
     {
-        
+        s = this;
     }
 
     // Update is called once per frame
@@ -16,7 +17,7 @@ public class Scoring : MonoBehaviour
         
     }
 
-    int GetScore()
+    public int GetScore()
     {
         int score = 0;
 
