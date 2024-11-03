@@ -55,7 +55,7 @@ public class Grabbable : MonoBehaviour
                     Vector3 mousePos = Input.mousePosition;
 
                     // Make sure it does not clip through 
-                    mousePos.y = Mathf.Clamp(mousePos.y, MOUSE_Y_MIN, MOUSE_Y_MAX);
+                    mousePos.y = Mathf.Clamp(mousePos.y, MOUSE_Y_MIN * Screen.width / 1920, MOUSE_Y_MAX * Screen.height / 1080);
 
                     // Send out ray from camera to mouse
                     Ray r = Camera.main.ScreenPointToRay(mousePos);
