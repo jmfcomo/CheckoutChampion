@@ -6,6 +6,9 @@ public class CustomerEndTrigger : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        //other.gameObject.GetComponent<>
+        if(other.gameObject.GetComponent<Separator>() != null)
+        {
+        GameManager.S.EndCustomer();
+        }
     }
 }
