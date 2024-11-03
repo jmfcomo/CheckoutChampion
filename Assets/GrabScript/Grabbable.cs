@@ -31,8 +31,6 @@ public class Grabbable : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.Log(Input.mousePosition);
-
         if (isGrabbed)
         {
             // Do we drop?
