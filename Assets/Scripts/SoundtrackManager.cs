@@ -86,12 +86,12 @@ public class SoundtrackManager : MonoBehaviour
         //tempoSync += Time.deltaTime;
         if (Mathf.Repeat((float)AudioSettings.dspTime - (float)startTime, sectionWidth) < prevFrameMod)
         {
-            Debug.Log("SPLIT");
+            //Debug.Log("SPLIT");
             foreach (Track track in tracks)
             {
                 if (track.state == PlayState.Pending)
                 {
-                    Debug.Log("Playin");
+                    //Debug.Log("Playin");
                     //track.source.time = tempoSync % (sectionWidth * fullTrackWidth) - 0.4f;
                     //track.source.Play();
                     track.source.volume = 1f;
@@ -100,7 +100,7 @@ public class SoundtrackManager : MonoBehaviour
                 }
                 if (track.state == PlayState.PendingMute)
                 {
-                    Debug.Log("Mutin");
+                    //Debug.Log("Mutin");
                     track.source.volume = 0f;
                     track.sourceLoop.volume = 0f;
                     track.state = PlayState.Mute;
@@ -108,7 +108,7 @@ public class SoundtrackManager : MonoBehaviour
             }
 
             if (Mathf.Repeat((float)AudioSettings.dspTime - (float)startTime, sectionWidth *  fullTrackWidth) < prevFrameFullMod) {
-                Debug.Log("Full loop");
+                //Debug.Log("Full loop");
                 if (flipFlop)
                 {
                     Invoke("ScheduleOriginal", 3f);
@@ -128,7 +128,7 @@ public class SoundtrackManager : MonoBehaviour
 
     void ScheduleOriginal()
     {
-        Debug.Log("Scheduling Original");
+        //Debug.Log("Scheduling Original");
         baseSource.PlayScheduled(startTime + (sectionWidth * fullTrackWidth) * Mathf.Ceil(((float)AudioSettings.dspTime - (float)startTime) / (sectionWidth * fullTrackWidth)));
         foreach (var track in tracks)
         {
@@ -138,7 +138,7 @@ public class SoundtrackManager : MonoBehaviour
 
     void ScheduleLoop()
     {
-        Debug.Log("Scheduling Loop");
+        //Debug.Log("Scheduling Loop");
         baseSourceLoop.PlayScheduled(startTime + (sectionWidth * fullTrackWidth) * Mathf.Ceil(((float)AudioSettings.dspTime - (float)startTime) / (sectionWidth * fullTrackWidth)));
         foreach (var track in tracks)
         {

@@ -59,7 +59,7 @@ public class Scoring : MonoBehaviour
 
         // Not implemented
 
-        Debug.Log(score);
+        //Debug.Log(score);
 
         return score;
     }

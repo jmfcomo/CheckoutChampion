@@ -204,7 +204,7 @@ public class GameManager : MonoBehaviour
     {
         score += Scoring.s.GetScore();
         scoreText.text = score.ToString();
-        money += score / 100;
+        money += score / 500;
 
         // Animate old cart out
         cartInstance.GetComponent<MoveToCart>().steps[0].pos = cartInstance.transform.position;
@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour
     {
         for(int i = 0;i< decorations.Length; i++)
         {
-            print("deco at index "+i+"="+decorations[i].name);
+            //print("deco at index "+i+"="+decorations[i].name);
             decorations[i].gameObject.SetActive(decorationsEnabled[i]);
         }
     }

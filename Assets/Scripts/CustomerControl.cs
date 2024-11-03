@@ -28,7 +28,6 @@ public class CustomerControl : MonoBehaviour
         dialogueText.text = dialogueString;
         dialogueText.alpha = 0f;
 
-        Debug.Log(dialogueString);
 
         Invoke("fadeIn", 5f);
         Invoke("fadeOut", 10f);
@@ -73,7 +72,7 @@ public class CustomerControl : MonoBehaviour
                 counter += Time.deltaTime;
 
             dialogueText.alpha = Mathf.Lerp(fromVal, toVal, counter / duration);
-            Debug.Log("Val: " + dialogueText.alpha);
+            //Debug.Log("Val: " + dialogueText.alpha);
             yield return null;
         }
     }

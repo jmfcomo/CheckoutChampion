@@ -66,7 +66,7 @@ public class MoveToCart : MonoBehaviour
 
         playing = true;
 
-        Debug.Log(gameObject.name + " movin");
+        //Debug.Log(gameObject.name + " movin");
     }
 
     public void StartAnimation(Action<MoveToCart> func)
