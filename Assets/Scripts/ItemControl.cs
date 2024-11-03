@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Grabbable))]
 public class ItemControl : MonoBehaviour
 {
-    private float speed;
+    private float speed = 0.01f;
     private Grabbable grabbable;
 
     private void Start()
