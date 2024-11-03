@@ -25,10 +25,6 @@ public class GameManager : MonoBehaviour
 
     public Customer currentCustomer { get; private set; }
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this); 
-    }
 
     [Serializable]
     public class Customer
@@ -54,10 +50,25 @@ public class GameManager : MonoBehaviour
     private TMP_Text scoreText;
     private List<Customer> levelCustomers;
     private float speed;
+    private bool allCustomersSpawned = false;
+    private GameObject levelEndScreen;
+    private GameManagerText[] levelEndText = new GameManagerText[6];
 
     private List<CustomerControl> customerModels = new List<CustomerControl>();
     private Decoration[] decorations = new Decoration[8];
 
+    private void Awake()
+    {
+
+        if(GameManager.S != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+        DontDestroyOnLoad(this); 
+        }
+    }
 
     private void Start()
     {
@@ -129,6 +140,14 @@ public class GameManager : MonoBehaviour
     {
         S.spawnPoint = GameObject.Find("Conveyor/SpawnPoint")?.transform;
         S.crateSpawnPoint = GameObject.Find("Conveyor/CrateSpawnPoint")?.transform;
+        S.levelEndScreen = GameObject.Find("Canvas/LevelComplete");
+        print(S.levelEndScreen);
+        if(levelEndScreen != null)
+        {
+            S.levelEndText = S.levelEndScreen.GetComponentsInChildren<GameManagerText>();
+        S.levelEndScreen.SetActive(false);
+        }
+
         S.scoreText = GameObject.Find("Canvas/Score")?.GetComponent<TMP_Text>();
         S.decorations = GameObject.Find("Decorations").GetComponentsInChildren<Decoration>();
 
@@ -141,8 +160,12 @@ public class GameManager : MonoBehaviour
         score = 0;
         speed *= 1.15f;
         day++;
-        SetDecorations();
-        if(spawnPoint)//id this a playable level?
+        allCustomersSpawned = false;
+        if (S.decorations != null)
+        {
+            SetDecorations();
+        }
+        if(spawnPoint)//is this a playable level?
         {
             crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
             cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
@@ -181,8 +204,10 @@ public class GameManager : MonoBehaviour
                 Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity).GetComponent<ItemControl>().SetSpeed(speed);
                 yield return new WaitForSeconds(7.5f);
             }
+            allCustomersSpawned = true;
             yield return new WaitForSeconds(10f);
-            SceneManager.LoadScene(2);
+            LevelComplete();
+            //SceneManager.LoadScene(2);
         }
     }
 
@@ -218,26 +243,29 @@ public class GameManager : MonoBehaviour
         customerModels.First().RetriggerAnimation();
         customerModels.RemoveAt(0);
 
-        // Spawn new cart and crate
-        crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
-        cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
+        if(allCustomersSpawned == false)
+        {
+            // Spawn new cart and crate
+            crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
+            cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
 
-        // Animate new crate (not really working)
-        List<MoveToCart.AnimationStep> tempSteps = new List<MoveToCart.AnimationStep>(crateInstance.GetComponent<MoveToCart>().steps);
-        crateInstance.GetComponent<MoveToCart>().steps.Clear();
+            // Animate new crate (not really working)
+            List<MoveToCart.AnimationStep> tempSteps = new List<MoveToCart.AnimationStep>(crateInstance.GetComponent<MoveToCart>().steps);
+            crateInstance.GetComponent<MoveToCart>().steps.Clear();
 
-        //crateInstance.GetComponent<MoveToCart>().steps = new List<MoveToCart.AnimationStep>();
-        MoveToCart.AnimationStep step = new MoveToCart.AnimationStep();
-        step.pos = crateInstance.transform.position + new Vector3(0, 0, 6);
-        crateInstance.GetComponent<MoveToCart>().steps.Add(step);
-        step.pos = crateSpawnPoint.position;
-        step.duration = 3;
-        step.curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        crateInstance.GetComponent<MoveToCart>().steps.Add(step);
-        crateInstance.GetComponent<MoveToCart>().StartAnimation((MoveToCart a) => { a.steps = tempSteps; });
+            //crateInstance.GetComponent<MoveToCart>().steps = new List<MoveToCart.AnimationStep>();
+            MoveToCart.AnimationStep step = new MoveToCart.AnimationStep();
+            step.pos = crateInstance.transform.position + new Vector3(0, 0, 6);
+            crateInstance.GetComponent<MoveToCart>().steps.Add(step);
+            step.pos = crateSpawnPoint.position;
+            step.duration = 3;
+            step.curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+            crateInstance.GetComponent<MoveToCart>().steps.Add(step);
+            crateInstance.GetComponent<MoveToCart>().StartAnimation((MoveToCart a) => { a.steps = tempSteps; });
 
-        // Animate new cart
-        cartInstance.GetComponent<MoveToCart>().StartAnimation();
+            // Animate new cart
+            cartInstance.GetComponent<MoveToCart>().StartAnimation();
+        }
 
     }
 
@@ -263,7 +291,17 @@ public class GameManager : MonoBehaviour
                 selectedCustomers.Add(customers[randomIndex]);
             }
         }
-
         return selectedCustomers;
     }
+    private void LevelComplete()
+    {
+        levelEndScreen.SetActive(true); 
+        levelEndText[0].GetComponent<TMP_Text>().text = "Day " + (day+1) + " Complete!";
+        levelEndText[1].GetComponent<TMP_Text>().text = customers[0].name;
+        levelEndText[2].GetComponent<TMP_Text>().text = customers[1].name;
+        levelEndText[3].GetComponent<TMP_Text>().text = customers[2].name;
+        levelEndText[4].GetComponent<TMP_Text>().text = score.ToString();
+        levelEndText[5].GetComponent<TMP_Text>().text = (score/100).ToString();
+    }
 }
+

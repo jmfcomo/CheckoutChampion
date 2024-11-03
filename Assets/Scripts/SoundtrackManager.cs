@@ -45,8 +45,16 @@ public class SoundtrackManager : MonoBehaviour
 
     private void Awake()
     {
+        if(SoundtrackManager.s != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+
         DontDestroyOnLoad(this);
         s = this;
+        }
     }
 
     // Start is called before the first frame update
