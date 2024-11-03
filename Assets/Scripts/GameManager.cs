@@ -18,8 +18,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-        //GameObjectEvents
+        DontDestroyOnLoad(this); 
     }
 
     [Serializable]
@@ -40,6 +39,7 @@ public class GameManager : MonoBehaviour
     private Transform spawnPoint;
     private Transform crateSpawnPoint;
     private bool isSpawningItems =false;
+    private GameObject crateInstance;
 
 
     private void Start()
@@ -75,8 +75,8 @@ public class GameManager : MonoBehaviour
         {
             int randomIndex = UnityEngine.Random.Range(0, checkoutItems.Count);
             //if rand does find one that we have any left of, just loop through until we find one that has some quantity left
-            print("random ind = " + randomIndex);
-            print("tempQuantities[randomIndex] = " + tempQuantities[randomIndex]);
+            //print("random ind = " + randomIndex);
+            //print("tempQuantities[randomIndex] = " + tempQuantities[randomIndex]);
             if(tempQuantities[randomIndex] <= 0)
             {
                 for(int j = 0; j < tempQuantities.Count; j++)   
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartLevel()
     {
-        Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
+        crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
 
         //iterate through customers
         foreach(var customer in customers)
@@ -126,12 +126,13 @@ public class GameManager : MonoBehaviour
             print(customer.name);
             StartCoroutine(SpawnItems(customer.items));
             yield return new WaitUntil(() => !isSpawningItems);
-
+            Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);
+            yield return new WaitForSeconds(1f);
         }
     }
 
-    private void EndCustomer()
+    public void EndCustomer()
     {
-
+        crateInstance.GetComponent<MoveToCart>().playing = true;
     }
 }
