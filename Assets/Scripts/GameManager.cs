@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using UnityEngine;
 using static UnityEditor.Progress;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
     private bool isSpawningItems =false;
     private GameObject crateInstance;
     private GameObject cartInstance;
+    private TMP_Text scoreText;
 
 
     private void Start()
@@ -97,7 +99,7 @@ public class GameManager : MonoBehaviour
             var randomItem = checkoutItems[randomIndex].prefab;
             tempQuantities[randomIndex]--;
             SpawnItem(randomItem);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(itemSpawnWait);
         }
         isSpawningItems=false;
     }
@@ -114,7 +116,8 @@ public class GameManager : MonoBehaviour
     private void OnActiveSceneChange(Scene current, Scene next)
     {
         S.spawnPoint = GameObject.Find("Conveyor/SpawnPoint").transform;
-        S.crateSpawnPoint = GameObject.Find("Conveyor/CrateSpawnPoint").transform;      
+        S.crateSpawnPoint = GameObject.Find("Conveyor/CrateSpawnPoint").transform;
+        S.scoreText = GameObject.Find("Canvas/Score").GetComponent<TMP_Text>();
 
         StartCoroutine(StartLevel());
     }
@@ -149,7 +152,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(SpawnItems(customer.items));
             yield return new WaitUntil(() => !isSpawningItems);
             Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(7.5f);
         }
     }
 
@@ -167,9 +170,10 @@ public class GameManager : MonoBehaviour
 
     public void Score()
     {
-        //score += Scoring.s.GetScore();
+        score += Scoring.s.GetScore();
+        scoreText.text = score.ToString();
 
-
+        // Animate old cart out
         cartInstance.GetComponent<MoveToCart>().steps[0].pos = cartInstance.transform.position;
         cartInstance.GetComponent<MoveToCart>().steps[1].pos = cartInstance.transform.position + new Vector3(6, 0, 0);
 
@@ -177,10 +181,11 @@ public class GameManager : MonoBehaviour
 
         cartInstance.GetComponent<MoveToCart>().StartAnimation((MoveToCart a) => { Destroy(a.gameObject); });
 
+        // Spawn new cart and crate
         crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
         cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
 
-        // Animate new crate
+        // Animate new crate (not really working)
         List<MoveToCart.AnimationStep> tempSteps = new List<MoveToCart.AnimationStep>(crateInstance.GetComponent<MoveToCart>().steps);
         crateInstance.GetComponent<MoveToCart>().steps.Clear();
 

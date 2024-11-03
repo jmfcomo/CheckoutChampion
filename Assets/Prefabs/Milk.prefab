@@ -184,5 +184,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrabbed: 0
-  pointValue: 0
+  pointValue: 75
   instrument: 4

@@ -35,6 +35,12 @@ public class Scoring : MonoBehaviour
         }
 
         // Bonus for % of items saved
+        int total = 0;
+        foreach (GameManager.CheckoutItem item in GameManager.S.currentCustomer.items)
+        {
+            total += item.quantity;
+        }
+
         float percentSaved = count / GameManager.S.currentCustomer.items.Count;
         
         if (percentSaved > 0.5) {
