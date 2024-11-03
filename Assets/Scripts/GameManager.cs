@@ -161,6 +161,8 @@ public class GameManager : MonoBehaviour
             Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);
             yield return new WaitForSeconds(7.5f);
         }
+        yield return new WaitForSeconds(10f);
+        SceneManager.LoadScene(0);
     }
 
     private void NewCustomer()
