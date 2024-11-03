@@ -125,6 +125,6 @@ public class Grabbable : MonoBehaviour
         isGrabbed = true;
         rb.useGravity = false;
         rb.isKinematic = true;
-        Debug.Log("got grabbed");
+        //Debug.Log("got grabbed");
     }
 }

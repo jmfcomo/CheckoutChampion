@@ -190,6 +190,7 @@ public class GameManager : MonoBehaviour
     {
         GameObject customer = Instantiate(customerPrefab);
         customer.GetComponentInChildren<CustomerControl>().dialogueString = currentCustomer.dialogue;
+        customer.GetComponentInChildren<CustomerControl>().nameString = currentCustomer.name;
         customerModels.Add(customer.GetComponent<CustomerControl>());
     }
 

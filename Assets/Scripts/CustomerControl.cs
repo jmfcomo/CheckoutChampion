@@ -12,7 +12,9 @@ public class CustomerControl : MonoBehaviour
     public float speed = 0.02f;
     private Animator animator;
     private TMP_Text dialogueText;
+    private TMP_Text nameText;
     public string dialogueString = "Hello world";
+    public string nameString = "John Fish";
 
     // Start is called before the first frame update
     void Start()
@@ -22,11 +24,17 @@ public class CustomerControl : MonoBehaviour
         animator.SetTrigger("TriStartWalk");
 
         dialogueText = transform.Find("Dialogue").GetComponent<TMP_Text>();
+        nameText = transform.Find("Name").GetComponent<TMP_Text>();
+        Debug.Log("Got Name");
 
         dialogueText.enabled = true;
+        nameText.enabled = true;
 
         dialogueText.text = dialogueString;
         dialogueText.alpha = 0f;
+
+        nameText.text = nameString;
+        nameText.alpha = 0f;
 
 
         Invoke("fadeIn", 5f);
@@ -72,6 +80,7 @@ public class CustomerControl : MonoBehaviour
                 counter += Time.deltaTime;
 
             dialogueText.alpha = Mathf.Lerp(fromVal, toVal, counter / duration);
+            nameText.alpha = Mathf.Lerp(fromVal, toVal, counter / duration);
             //Debug.Log("Val: " + dialogueText.alpha);
             yield return null;
         }
