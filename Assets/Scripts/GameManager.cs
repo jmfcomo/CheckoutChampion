@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
     public GameObject crateInstance;
     private GameObject cartInstance;
     private TMP_Text scoreText;
+    private List<Customer> levelCustomers;
 
     private List<CustomerControl> customerModels = new List<CustomerControl>();
     private Decoration[] decorations = new Decoration[8];
@@ -142,7 +143,10 @@ public class GameManager : MonoBehaviour
             cartInstance.GetComponent<MoveToCart>().StartAnimation();
 
         //iterate through customers
-        foreach(var customer in customers)
+
+
+
+        foreach(var customer in GetLevelCustomers())
         {
             currentCustomer = customer;
             NewCustomer();
@@ -238,5 +242,22 @@ public class GameManager : MonoBehaviour
             print("deco at index "+i+"="+decorations[i].name);
             decorations[i].gameObject.SetActive(decorationsEnabled[i]);
         }
+    }
+
+    private List<Customer> GetLevelCustomers()
+    {
+        List<Customer> selectedCustomers = new List<Customer>();
+        System.Random random = new System.Random();
+
+        while (selectedCustomers.Count < 3)
+        {
+            int randomIndex = random.Next(customers.Count);
+            if (!selectedCustomers.Contains(customers[randomIndex]))
+            {
+                selectedCustomers.Add(customers[randomIndex]);
+            }
+        }
+
+        return selectedCustomers;
     }
 }
