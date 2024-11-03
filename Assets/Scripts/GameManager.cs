@@ -159,6 +159,7 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         speed *= 1.15f;
+        speed = Mathf.Clamp(speed, 0, .03f);
         day++;
         allCustomersSpawned = false;
         if (S.decorations != null)
@@ -230,7 +231,7 @@ public class GameManager : MonoBehaviour
     {
         score += Scoring.s.GetScore();
         scoreText.text = score.ToString();
-        money += score / 200;
+        
 
         // Animate old cart out
         cartInstance.GetComponent<MoveToCart>().steps[0].pos = cartInstance.transform.position;
@@ -296,8 +297,10 @@ public class GameManager : MonoBehaviour
     }
     private void LevelComplete()
     {
+        money += score / 200;
+
         levelEndScreen.SetActive(true); 
-        levelEndText[0].GetComponent<TMP_Text>().text = "Day " + (day+1) + " Complete!";
+        levelEndText[0].GetComponent<TMP_Text>().text = "Day " + (day) + " Complete!";
         levelEndText[1].GetComponent<TMP_Text>().text = customers[0].name;
         levelEndText[2].GetComponent<TMP_Text>().text = customers[1].name;
         levelEndText[3].GetComponent<TMP_Text>().text = customers[2].name;
