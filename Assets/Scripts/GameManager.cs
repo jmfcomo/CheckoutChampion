@@ -139,7 +139,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartLevel()
     {
         score = 0;
-        speed *= 1.2f;
+        speed *= 1.15f;
         day++;
         SetDecorations();
         if(spawnPoint)//id this a playable level?
@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour
                 //print(customer.name);
                 StartCoroutine(SpawnItems(customer.items));
                 yield return new WaitUntil(() => !isSpawningItems);
-                Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);
+                Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity).GetComponent<ItemControl>().SetSpeed(speed);
                 yield return new WaitForSeconds(7.5f);
             }
             yield return new WaitForSeconds(10f);
