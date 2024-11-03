@@ -9,11 +9,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public List<Customer> customers;
-    static public GameManager S;
+    public static GameManager S;
     public GameObject separatorPrefab;
     public GameObject cratePrefab;
     public float itemSpawnWait;
 
+    public int score;
+
+    public Customer currentCustomer { get; private set; }
 
     private void Awake()
     {
@@ -116,11 +119,14 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartLevel()
     {
+        score = 0;
+
         crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
 
         //iterate through customers
         foreach(var customer in customers)
         {
+            currentCustomer = customer;
             print(customer.name);
             StartCoroutine(SpawnItems(customer.items));
             yield return new WaitUntil(() => !isSpawningItems);
@@ -132,5 +138,12 @@ public class GameManager : MonoBehaviour
     public void EndCustomer()
     {
         crateInstance.GetComponent<MoveToCart>().playing = true;
+
+        Invoke("Score", 4f);
+    }
+
+    public void Score()
+    {
+        score += Scoring.s.GetScore();
     }
 }

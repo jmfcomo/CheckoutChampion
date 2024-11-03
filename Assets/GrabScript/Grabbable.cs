@@ -20,6 +20,7 @@ public class Grabbable : MonoBehaviour
     const float MOUSE_Y_MAX = 725f;
 
     Rigidbody rb;
+    public int pointValue = 0;
 
 
     // Start is called before the first frame update
