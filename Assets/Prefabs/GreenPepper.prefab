@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5be45fb4e57166e4f8818b52cb50c2e5, type: 3}
       propertyPath: m_Name
-      value: Pepper_Green
+      value: GreenPepper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -77,6 +77,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5be45fb4e57166e4f8818b52cb50c2e5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9023931126544884097}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5be45fb4e57166e4f8818b52cb50c2e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1481792440188371123}
   m_SourcePrefab: {fileID: 100100000, guid: 5be45fb4e57166e4f8818b52cb50c2e5, type: 3}
 --- !u!1 &1236522674305787022 stripped
 GameObject:
@@ -144,3 +147,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -4991699829951180597, guid: 5be45fb4e57166e4f8818b52cb50c2e5, type: 3}
+--- !u!114 &1481792440188371123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236522674305787022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503e15ec9276cfa43a3c3dc561866aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrabbed: 0
+  pointValue: 0
+  instrument: 1

@@ -160,5 +160,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrabbed: 0
-  startY: 0
-  maxY: 0
+  pointValue: 0
+  instrument: 2

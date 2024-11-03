@@ -126,8 +126,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isGrabbed: 0
-  startY: 0
-  maxY: 0
+  pointValue: 0
+  instrument: 6
 --- !u!114 &8320189478297990597
 MonoBehaviour:
   m_ObjectHideFlags: 0

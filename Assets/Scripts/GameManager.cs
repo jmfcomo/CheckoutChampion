@@ -129,6 +129,17 @@ public class GameManager : MonoBehaviour
         {
             NewCustomer();
             currentCustomer = customer;
+
+            foreach (var tracks in SoundtrackManager.s.tracks)
+            {
+                tracks.state = SoundtrackManager.PlayState.PendingMute;
+            }
+
+            foreach (var checkout in customer.items)
+            {
+                SoundtrackManager.s.tracks[checkout.prefab.GetComponent<Grabbable>().instrument].state = SoundtrackManager.PlayState.Pending;
+            }
+
             //print(customer.name);
             StartCoroutine(SpawnItems(customer.items));
             yield return new WaitUntil(() => !isSpawningItems);

@@ -24,6 +24,8 @@ public class SoundtrackManager : MonoBehaviour
         public float timeOffset = 0;
     }
 
+    public static SoundtrackManager s;
+
     public float tempoSync;
     public float sectionWidth;
     public int fullTrackWidth;
@@ -40,6 +42,12 @@ public class SoundtrackManager : MonoBehaviour
     private double startTime;
 
     const float DELAY = 2f;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+        s = this;
+    }
 
     // Start is called before the first frame update
     void Start()
