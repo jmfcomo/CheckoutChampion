@@ -230,7 +230,7 @@ public class GameManager : MonoBehaviour
     {
         score += Scoring.s.GetScore();
         scoreText.text = score.ToString();
-        money += score / 500;
+        money += score / 200;
 
         // Animate old cart out
         cartInstance.GetComponent<MoveToCart>().steps[0].pos = cartInstance.transform.position;
@@ -302,7 +302,7 @@ public class GameManager : MonoBehaviour
         levelEndText[2].GetComponent<TMP_Text>().text = customers[1].name;
         levelEndText[3].GetComponent<TMP_Text>().text = customers[2].name;
         levelEndText[4].GetComponent<TMP_Text>().text = score.ToString();
-        levelEndText[5].GetComponent<TMP_Text>().text = (score/100).ToString();
+        levelEndText[5].GetComponent<TMP_Text>().text = (score/200).ToString();
     }
 }
 
