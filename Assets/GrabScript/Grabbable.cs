@@ -17,7 +17,7 @@ public class Grabbable : MonoBehaviour
 
     // Clamp mouse positions to keep grabbed item from clipping through conveyor belt or camera in box view
     const float MOUSE_Y_MIN = 400f;
-    const float MOUSE_Y_MAX = 600f;
+    const float MOUSE_Y_MAX = 550f;
 
     Rigidbody rb;
 

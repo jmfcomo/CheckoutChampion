@@ -145,7 +145,14 @@ public class GameManager : MonoBehaviour
 
             foreach (var checkout in customer.items)
             {
-                SoundtrackManager.s.tracks[checkout.prefab.GetComponent<Grabbable>().instrument].state = SoundtrackManager.PlayState.Pending;
+                try
+                {
+                    SoundtrackManager.s.tracks[checkout.prefab.GetComponent<Grabbable>().instrument].state = SoundtrackManager.PlayState.Pending;
+                } catch
+                {
+
+                }
+                
             }
 
             //print(customer.name);

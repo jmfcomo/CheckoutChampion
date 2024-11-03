@@ -83,6 +83,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b13477e74e708544e8b4d6e670285d19, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3146377248552290109}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b13477e74e708544e8b4d6e670285d19, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1728367558976625979}
   m_SourcePrefab: {fileID: 100100000, guid: b13477e74e708544e8b4d6e670285d19, type: 3}
 --- !u!1 &587737539710104506 stripped
 GameObject:
@@ -127,7 +130,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!64 &600553592815476536
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -200,3 +203,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-1728367558976625979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587737539710104506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503e15ec9276cfa43a3c3dc561866aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGrabbed: 0
+  pointValue: 100
+  instrument: 3
