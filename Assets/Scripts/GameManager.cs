@@ -9,14 +9,19 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public List<Customer> customers;
-    static private GameManager S;
     public GameObject customerPrefab;
+    public static GameManager S;
+    public GameObject separatorPrefab;
+    public GameObject cratePrefab;
     public float itemSpawnWait;
+
+    public int score;
+
+    public Customer currentCustomer { get; private set; }
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
-        //GameObjectEvents
+        DontDestroyOnLoad(this); 
     }
 
     [Serializable]
@@ -35,7 +40,9 @@ public class GameManager : MonoBehaviour
     }
 
     private Transform spawnPoint;
+    private Transform crateSpawnPoint;
     private bool isSpawningItems =false;
+    private GameObject crateInstance;
 
 
     private void Start()
@@ -71,8 +78,8 @@ public class GameManager : MonoBehaviour
         {
             int randomIndex = UnityEngine.Random.Range(0, checkoutItems.Count);
             //if rand does find one that we have any left of, just loop through until we find one that has some quantity left
-            print("random ind = " + randomIndex);
-            print("tempQuantities[randomIndex] = " + tempQuantities[randomIndex]);
+            //print("random ind = " + randomIndex);
+            //print("tempQuantities[randomIndex] = " + tempQuantities[randomIndex]);
             if(tempQuantities[randomIndex] <= 0)
             {
                 for(int j = 0; j < tempQuantities.Count; j++)   
@@ -105,8 +112,7 @@ public class GameManager : MonoBehaviour
     private void OnActiveSceneChange(Scene current, Scene next)
     {
         S.spawnPoint = GameObject.Find("Conveyor/SpawnPoint").transform;
-        
-        print(spawnPoint);
+        S.crateSpawnPoint = GameObject.Find("Conveyor/CrateSpawnPoint").transform;      
 
         StartCoroutine(StartLevel());
     }
@@ -114,14 +120,20 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartLevel()
     {
+        score = 0;
+
+        crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
+
         //iterate through customers
         foreach(var customer in customers)
         {
             NewCustomer();
+            currentCustomer = customer;
             print(customer.name);
             StartCoroutine(SpawnItems(customer.items));
             yield return new WaitUntil(() => !isSpawningItems);
-
+            Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);
+            yield return new WaitForSeconds(1f);
         }
     }
 
@@ -130,8 +142,15 @@ public class GameManager : MonoBehaviour
         GameObject customer = Instantiate(customerPrefab);
     }
 
-    private void EndCustomer()
+    public void EndCustomer()
     {
+        crateInstance.GetComponent<MoveToCart>().playing = true;
 
+        Invoke("Score", 4f);
+    }
+
+    public void Score()
+    {
+        score += Scoring.s.GetScore();
     }
 }
