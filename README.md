@@ -1,6 +1,8 @@
 # Checkout Champion
 Bagging at a grocery store can be a difficult job. Meet wacky customers, and do your best to not drop any groceries! See how you stack up in Checkout Champion! 
 
+![Checkout Champion Title Screen](https://imgur.com/a/hxiP9A2)
+
 ## How to play
 Download the latest release from the release tab on the right-side of the page.
 Extract the .zip file, and run the .exe file.
