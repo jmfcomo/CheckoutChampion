@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LevelTemp.unity
     guid: c70a45b707813c240a297ba9535e8176
+  - enabled: 1
+    path: Assets/Scenes/ShopMenu.unity
+    guid: 3a339221d757ba44fbf1c7b159eb847e
   m_configObjects: {}

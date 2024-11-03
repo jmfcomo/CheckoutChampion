@@ -17,7 +17,10 @@ public class GameManager : MonoBehaviour
     public GameObject cartPrefab;
     public float itemSpawnWait;
 
+    public bool[] decorationsEnabled = new bool[8];
+
     public int score;
+    public int money=0;
 
     public Customer currentCustomer { get; private set; }
 
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
     private TMP_Text scoreText;
 
     private List<CustomerControl> customerModels = new List<CustomerControl>();
+    private Decoration[] decorations = new Decoration[8];
 
 
     private void Start()
@@ -117,9 +121,10 @@ public class GameManager : MonoBehaviour
 
     private void OnActiveSceneChange(Scene current, Scene next)
     {
-        S.spawnPoint = GameObject.Find("Conveyor/SpawnPoint").transform;
-        S.crateSpawnPoint = GameObject.Find("Conveyor/CrateSpawnPoint").transform;
-        S.scoreText = GameObject.Find("Canvas/Score").GetComponent<TMP_Text>();
+        S.spawnPoint = GameObject.Find("Conveyor/SpawnPoint")?.transform;
+        S.crateSpawnPoint = GameObject.Find("Conveyor/CrateSpawnPoint")?.transform;
+        S.scoreText = GameObject.Find("Canvas/Score")?.GetComponent<TMP_Text>();
+        S.decorations = GameObject.Find("Decorations").GetComponentsInChildren<Decoration>();
 
         StartCoroutine(StartLevel());
     }
@@ -129,9 +134,12 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
 
-        crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
-        cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
-        cartInstance.GetComponent<MoveToCart>().StartAnimation();
+        SetDecorations();
+        if(spawnPoint)//id this a playable level?
+        {
+            crateInstance = Instantiate(cratePrefab, crateSpawnPoint.position, Quaternion.identity);
+            cartInstance = Instantiate(cartPrefab, new Vector3(-6, 0.5199f, 1.31f), Quaternion.identity);
+            cartInstance.GetComponent<MoveToCart>().StartAnimation();
 
         //iterate through customers
         foreach(var customer in customers)
@@ -139,32 +147,33 @@ public class GameManager : MonoBehaviour
             currentCustomer = customer;
             NewCustomer();
 
-            // Dynamic soundtrack
-            foreach (var tracks in SoundtrackManager.s.tracks)
-            {
-                tracks.state = SoundtrackManager.PlayState.PendingMute;
-            }
-
-            foreach (var checkout in customer.items)
-            {
-                try
+                // Dynamic soundtrack
+                foreach (var tracks in SoundtrackManager.s.tracks)
                 {
-                    SoundtrackManager.s.tracks[checkout.prefab.GetComponent<Grabbable>().instrument].state = SoundtrackManager.PlayState.Pending;
-                } catch
-                {
-
+                    tracks.state = SoundtrackManager.PlayState.PendingMute;
                 }
-                
-            }
 
-            //print(customer.name);
-            StartCoroutine(SpawnItems(customer.items));
-            yield return new WaitUntil(() => !isSpawningItems);
-            Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);
-            yield return new WaitForSeconds(7.5f);
+                foreach (var checkout in customer.items)
+                {
+                    try
+                    {
+                        SoundtrackManager.s.tracks[checkout.prefab.GetComponent<Grabbable>().instrument].state = SoundtrackManager.PlayState.Pending;
+                    } catch
+                    {
+
+                    }
+                
+                }
+
+                //print(customer.name);
+                StartCoroutine(SpawnItems(customer.items));
+                yield return new WaitUntil(() => !isSpawningItems);
+                Instantiate(separatorPrefab, spawnPoint.position, Quaternion.identity);
+                yield return new WaitForSeconds(7.5f);
+            }
+            yield return new WaitForSeconds(10f);
+            SceneManager.LoadScene(2);
         }
-        yield return new WaitForSeconds(10f);
-        SceneManager.LoadScene(0);
     }
 
     private void NewCustomer()
@@ -185,6 +194,7 @@ public class GameManager : MonoBehaviour
     {
         score += Scoring.s.GetScore();
         scoreText.text = score.ToString();
+        money += score / 100;
 
         // Animate old cart out
         cartInstance.GetComponent<MoveToCart>().steps[0].pos = cartInstance.transform.position;
@@ -219,5 +229,14 @@ public class GameManager : MonoBehaviour
         // Animate new cart
         cartInstance.GetComponent<MoveToCart>().StartAnimation();
 
+    }
+
+    private void SetDecorations()
+    {
+        for(int i = 0;i< decorations.Length; i++)
+        {
+            print("deco at index "+i+"="+decorations[i].name);
+            decorations[i].gameObject.SetActive(decorationsEnabled[i]);
+        }
     }
 }
