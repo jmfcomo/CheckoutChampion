@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public bool[] decorationsEnabled = new bool[8];
 
     public int score;
+    public int day;
     public int money=0;
 
     public Customer currentCustomer { get; private set; }
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     public class Customer
     {
         public List<CheckoutItem> items;
+        public int dayBorn;
         public string name;
         public string dialogue;
     }
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
     private GameObject cartInstance;
     private TMP_Text scoreText;
     private List<Customer> levelCustomers;
+    private float speed;
 
     private List<CustomerControl> customerModels = new List<CustomerControl>();
     private Decoration[] decorations = new Decoration[8];
@@ -60,6 +63,8 @@ public class GameManager : MonoBehaviour
     {
         S = this;
         SceneManager.activeSceneChanged += OnActiveSceneChange;
+        this.day = 0;
+        speed = 0.01f;
     }
     // hand = GameObject.Find("Monster/Arm/Hand");
 
@@ -116,7 +121,7 @@ public class GameManager : MonoBehaviour
         GameObject item = Instantiate(itemPrefab);
         item.transform.position = spawnPoint.transform.position;
         ItemControl projControl = item.GetComponent<ItemControl>();
-        //projControl.SetSpeed(speed);
+        projControl.SetSpeed(speed);
     }
 
 
@@ -134,7 +139,8 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartLevel()
     {
         score = 0;
-
+        speed *= 1.2f;
+        day++;
         SetDecorations();
         if(spawnPoint)//id this a playable level?
         {
@@ -252,7 +258,7 @@ public class GameManager : MonoBehaviour
         while (selectedCustomers.Count < 3)
         {
             int randomIndex = random.Next(customers.Count);
-            if (!selectedCustomers.Contains(customers[randomIndex]))
+            if (!selectedCustomers.Contains(customers[randomIndex]) && customers[randomIndex].dayBorn <= day)
             {
                 selectedCustomers.Add(customers[randomIndex]);
             }
