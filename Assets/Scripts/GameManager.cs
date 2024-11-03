@@ -136,8 +136,8 @@ public class GameManager : MonoBehaviour
         //iterate through customers
         foreach(var customer in customers)
         {
-            NewCustomer();
             currentCustomer = customer;
+            NewCustomer();
 
             // Dynamic soundtrack
             foreach (var tracks in SoundtrackManager.s.tracks)
@@ -170,6 +170,7 @@ public class GameManager : MonoBehaviour
     private void NewCustomer()
     {
         GameObject customer = Instantiate(customerPrefab);
+        customer.GetComponentInChildren<CustomerControl>().dialogueString = currentCustomer.dialogue;
         customerModels.Add(customer.GetComponent<CustomerControl>());
     }
 
